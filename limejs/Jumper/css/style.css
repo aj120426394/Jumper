@@ -62,6 +62,7 @@ body{
 	top: 580px;
 	border:none;
 	font-size:1.4em;
+	font-family: 'Lily Script One', cursive;
 	
 	-webkit-transition: all 0.3s ease;
 		-moz-transition: all 0.3s ease;
@@ -87,7 +88,6 @@ body{
 
 
 input {
-	font-family: 'Lily Script One', cursive;
 	border: 1px solid black;
 	-webkit-border-radius: 5px;
     border-radius: 5px;
