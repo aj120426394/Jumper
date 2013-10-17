@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Jumper</title>
+	
+	<link rel="stylesheet" href="css/style.css">
+	<link href='http://fonts.googleapis.com/css?family=Andika|Lily+Script+One' rel='stylesheet' type='text/css'>
+	
+	<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="js/parse-1.2.12.min.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+	<script type="text/javascript" src="js/register.js"></script>
+</head>
+
+<body>
+	<div id='frame'>
+		<div id='logo'>
+			<img src= 'assets/img/title.png'>
+		</div>
+		<div id='loginbg'>
+			<div id='loginform'>
+				<form id='login'>
+					<p><label>Username:</label><br><input type="text" id='username' size='23'>
+					<p><label>Password:</label><br><input type="password" id='password' size='23'>
+					<div id='registertext'>Don't have a account? Register <a href='#' id='registerbtn'>here</a></div>
+					<p><input type="submit" value="Login" class='btn'>
+				</form>
+			</div>
+			
+			<div id='registerform'>
+				<form id='register' action="#" method="get">
+					<p><label>Username: </label><br><input type="text" id='username2' size='23'>
+					<p><label>Password: </label><br><input type="password" id='password2' size='23'>
+					<p><label>Confirm Password: </label><br><input type="password" id='confirmpassword' size='23'>
+					<p><label>Email: </label><br><input type="email" id='email' size='23'>
+					<p><input type="submit" value="Register" class='btn'>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

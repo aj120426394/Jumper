@@ -1,0 +1,97 @@
+html{
+	background: #60311B;
+}
+
+body{
+	font-family: 'Andika', sans-serif;
+}
+#frame{
+	width: 1024px;
+	height: 768px;
+	background:url('../assets/img/bg.jpg');
+	background-repeat:no-repeat;
+	margin: auto;
+}
+
+#logo {
+	padding-top: 20px;
+	width: 425px;
+	height: 196px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+
+#loginbg {
+	width: 302px;
+	height: 447px;
+	background:url('../assets/img/login_register_interface.png');
+	background-repeat:no-repeat;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 20px;
+}
+
+#loginform {
+	width: 170px;
+	height: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 25px;
+	font-size: 1em;
+	font-weight: bold;
+}	
+
+#registerform {
+	width: 170px;
+	height: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 25px;
+	font-size: 1em;
+	font-weight: bold;
+}	
+
+.btn {
+	background-image: url('../assets/img/login_btn.png');
+	background-color: Transparent;
+	width: 184px;
+	height: 65px;
+	position: absolute;
+	top: 580px;
+	border:none;
+	font-size:1.4em;
+	
+	-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+}
+
+.btn:hover {
+	top: 575px;
+	-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+}
+
+#registertext {
+	margin-top: 60px;
+	text-align: center;
+	font-size: .8em;
+}
+
+
+input {
+	font-family: 'Lily Script One', cursive;
+	border: 1px solid black;
+	-webkit-border-radius: 5px;
+    border-radius: 5px;
+	padding: 5px;
+	margin-left: -2px;
+}
+

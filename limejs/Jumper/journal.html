@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Jumper - Journal</title>
+    <link href="css/journalstyle.css" media="all" rel="stylesheet" type="text/css"/>
+    <link href='http://fonts.googleapis.com/css?family=Andika|Lily+Script+One' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  	<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.12.min.js"></script>
+  	<script src="http://code.createjs.com/soundjs-0.4.0.min.js"></script>
+    <script type="text/javascript" src="js/journal.js"></script>
+  </head>
+  <body>
+  		<div id="topbar">
+  			<div id="topbarlogo">
+  				<img id="toplogo" src="assets/img/jumper-logo.png">
+  			</div>
+  		  	<div id="title">
+  				<h1><span id="journalname"></span>
+  			</div>
+  			<div>
+	  			<img id="museumguideimage" class="characterright" src="assets/img/museum-guide.png">
+	  		</div>
+	  		<div>
+		  		<img id="museumguidegif" class="characterright" src="assets/img/museum-guy2.gif">
+		  	</div>
+  			<div>
+  				 <img id="clue1small" src="assets/img/grclue.png" draggable="true" ondragstart="drag(event)">
+  			</div>
+  		</div>
+  		<div id="frame">
+  			<div id="journalleft">
+  				<h2>Mission: Gold Rush</h2>
+  				<p>What were the gold field riots between the european miners and the 
+  				Chinese miners known as? (Think back to the video you watched about 
+  				chinese miners)</p>
+  				<form id="gfquestion1">
+  					<input id="gfanswer1" type="radio" name="gfquestion" value="Ballarat">Ballarat Riots</input>
+  					<input id="gfanswer2" type="radio" name="gfquestion" value="Lambing Flats">Lambing Flats Riots</input>
+  					<input id="gfanswer3" type="radio" name="gfquestion" value="Cooktown">Cooktown Riots</input>
+  				</form>
+  				<p>What were these riots about?</p>
+  				<p><textarea id="gfq2text" rows=5 cols=55></textarea></p>
+  				<p>Do you think the local miners were being fair? Why do you think that?</p>
+  				<p><textarea id="gfq3text" rows=5 cols=55></textarea></p>
+  				<div id="leftsubmit">
+  					<img id="lsbutton" src="assets/img/green-button.png">
+  					<p id="lsbuttontext">save notes</p>
+  				</div>
+  				<div id="gfclue" ondrop="drop(event)" ondragover="allowDrop(event)">
+  					<img id="clue1" src="assets/img/grclue.png">
+  				</div>
+  			</div> <!-- end journalleft -->
+  			<div id="journalright">
+  				<h2>Mission: Chinese Australians Now</h2>
+  			</div>
+  		</div> <!-- end frame -->
+  		<audio id="part1" src="assets/audio/part_1.ogg" preload="auto"></audio>
+  		<audio id="part2" src="assets/audio/part_2.ogg" preload="auto"></audio>
+  		<audio id="part3" src="assets/audio/part_3.ogg" preload="auto"></audio>
+  		<audio id="part4" src="assets/audio/part_4.ogg" preload="auto"></audio>
+  		<audio id="part5" src="assets/audio/part_5.ogg" preload="auto"></audio>
+  		<audio id="part6" src="assets/audio/part_6.ogg" preload="auto"></audio>
+  		<audio id="part7" src="assets/audio/part_7.ogg" preload="auto"></audio>
+  </body>
+</html>
