@@ -1,5 +1,5 @@
-
 var points = 0;
+
 Jumper.gameIntro = function(){
 	var scene = new lime.Scene();
 	
@@ -9,23 +9,34 @@ Jumper.gameIntro = function(){
 	var background = new lime.Sprite().setFill('assets/goldfield.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
 	layer.appendChild(background);
 	
-	var panel = new lime.Sprite().setFill('assets/panel.png').setSize(800,300).setPosition(512,384).setAnchorPoint(0.5,0.5);
+	var panel = new lime.Sprite().setFill('assets/dialog box.png').setSize(500,500).setPosition(512,384).setAnchorPoint(0.5,0.5);
 	layer.appendChild(panel);
 	
-	Jumper.description = new lime.Label().setPosition(512, 334).setText('Collect as many gold nuggets as you can in 30 seconds!').setFontSize(28).setFontWeight('bold');
+	Jumper.description = new lime.Label().setPosition(512, 234).setSize(350,0).setAnchorPoint(0.5,0).setText('Collect as many gold nuggets as you can in 30 seconds!').setFontSize(28).setFontWeight('bold');
 	scene.appendChild(Jumper.description);
 	
-	Jumper.play = new lime.Label().setPosition(512, 450).setText('Start').setFontSize(28).setFontWeight('bold');
+	Jumper.description2 = new lime.Label().setPosition(512, 354).setSize(350,0).setAnchorPoint(0.5,0).setText('(Click and drag them into the basket)').setFontSize(28).setFontWeight('bold');
+	scene.appendChild(Jumper.description2);
+	
+	var button = new lime.Sprite().setFill('assets/login_btn.png').setSize(184,65).setPosition(512,450).setAnchorPoint(0.5,0);
+	layer.appendChild(button);
+	
+	Jumper.play = new lime.Label().setPosition(512, 467).setText('Start').setFontSize(28).setFontWeight('bold').setAnchorPoint(0.5,0);
 	scene.appendChild(Jumper.play);
 	
-	goog.events.listen(Jumper.play,['mousedown','touchstart'],function(e){
-    	Jumper.gameMain();
+	sound1 = new Audio('assets/button.mp3'); 
+	
+	goog.events.listen(button,['mousedown','touchstart'],function(e){
+	sound1.play();
+    Jumper.gameMain();
 	});
+	
 	
 	Jumper.director.replaceScene(scene);
 }
  
 Jumper.gameMain = function(){
+
 
 	var scene = new lime.Scene();
 	
@@ -35,10 +46,10 @@ Jumper.gameMain = function(){
 	var background = new lime.Sprite().setFill('assets/goldfield.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
 	layer.appendChild(background);
 	
-	var panel = new lime.Sprite().setFill('assets/panel2.png').setSize(500,50).setPosition(512,700).setAnchorPoint(.5,0);
+	var panel = new lime.Sprite().setFill('assets/score box.png').setSize(500,50).setPosition(512,700).setAnchorPoint(.5,0);
 	layer.appendChild(panel);
 	
-	Jumper.score = new lime.Label().setPosition(512, 710).setAnchorPoint(0.5,0).setText('Gold Nuggets Collected: ' + points).setFontSize(28).setFontWeight('bold');
+	Jumper.score = new lime.Label().setPosition(512, 710).setAnchorPoint(0.5,0).setText('Gold Nuggets Collected: ' + points).setFontSize(24).setFontWeight('bold');
 	scene.appendChild(Jumper.score);
 	
 	var drop1 = Jumper.drop1 = makeDroppable().setPosition(512, 550).setAnchorPoint(0.5,0.5);
@@ -89,31 +100,36 @@ Jumper.gameMain = function(){
 Jumper.gameEnd = function(){
 	var scene = new lime.Scene();
 	var snd_part6 = new Audio('assets/audio/part_6.ogg');
+	
 	var layer = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
 	scene.appendChild(layer);
 	
 	var background = new lime.Sprite().setFill('assets/goldfield.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
 	layer.appendChild(background);
 
-	var panel = new lime.Sprite().setFill('assets/panel.png').setSize(800,300).setPosition(512,384).setAnchorPoint(0.5,0.5);
+	var panel = new lime.Sprite().setFill('assets/dialog box.png').setSize(500,500).setPosition(512,384).setAnchorPoint(0.5,0.5);
 	layer.appendChild(panel);
 	
-	Jumper.timesup = new lime.Label().setPosition(512, 334).setText('Times up!').setFontSize(48).setFontWeight('bold');
+	Jumper.timesup = new lime.Label().setPosition(512, 234).setText('Times up!').setFontSize(48).setFontWeight('bold');
 	scene.appendChild(Jumper.timesup);
 	
-	Jumper.finalscore = new lime.Label().setPosition(512, 400).setText('Well done! You collected ' + points + ' gold nuggets.').setFontSize(28).setFontWeight('bold');
+	Jumper.finalscore = new lime.Label().setPosition(512, 300).setSize(350,0).setText('Well done! You collected ' + points + ' gold nuggets.').setFontSize(28).setFontWeight('bold');
 	scene.appendChild(Jumper.finalscore);
 	
-	Jumper.go = new lime.Label().setPosition(512, 480).setText('Continue').setFontSize(28).setFontWeight('bold');
+	var button = new lime.Sprite().setFill('assets/login_btn.png').setSize(184,65).setPosition(512,450).setAnchorPoint(0.5,0);
+	layer.appendChild(button);
+	
+	Jumper.go = new lime.Label().setPosition(512, 467).setText('Continue').setFontSize(28).setFontWeight('bold').setAnchorPoint(0.5,0);
 	scene.appendChild(Jumper.go);
 	
 	goog.events.listen(Jumper.go,['mousedown','touchstart'],function(e){
-    //put next scene transition here
-		snd_part6.play();
+	snd_part6.play();
 	});
 	snd_part6.addEventListener('ended', function(){
 		Jumper.Chapter1();
 	});
+	
+	sound1 = new Audio('assets/button.mp3'); 
 	
 	Jumper.director.replaceScene(scene);
 }
@@ -133,6 +149,8 @@ function makeDraggable() {
 		goog.events.listen(drag, lime.events.Drag.Event.DROP, function(e){
 			console.log('item was dropped');
 			var dropTarget = e.activeDropTarget;
+			sound2 = new Audio('assets/gold.mp3'); 
+			sound2.play();
 		  
 			e.moveEndedCallback = function(){
 			console.log('Called after animation has ended');

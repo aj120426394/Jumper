@@ -13,6 +13,7 @@ goog.require('lime.animation.FadeTo');
 goog.require('lime.animation.ScaleTo');
 goog.require('lime.animation.MoveTo');
 goog.require('lime.animation.RotateBy');
+goog.require('lime.animation.RotateTo');
 goog.require('lime.animation.Loop');
 goog.require('lime.transitions.Dissolve');
 goog.require('goog.style');
