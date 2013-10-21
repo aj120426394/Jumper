@@ -263,6 +263,14 @@ Jumper.Chapter1 = function(){
 		snd_part3 = new Audio('assets/audio/part_3.ogg');
 		snd_part3.play();
 		
+		snd_part3.addEventListener('ended', function(){
+			putButton1();
+			putButton2();
+			timer = setTimeout(function(){
+				snd_part2.play();
+			}, 10000);
+		});
+		
 		ship = new lime.Sprite().setFill('assets/ship.png').setSize(50,50).setPosition(300,200).setAnchorPoint(.5,.5)
 		layer_map.appendChild(ship);
 		scene.appendChild(layer_map);
