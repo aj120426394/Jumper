@@ -113,23 +113,52 @@ Jumper.timeTravle = function(){
 	time_clock = new lime.Sprite().setFill('assets/img/time-travel-clock.jpg').setSize(1280,1280).setAnchorPoint(.5,.5).setPosition(512,384);
 	layer_bg.appendChild(time_clock);
 	
-	keepturning = new lime.animation.Loop(
+	jumpInRotate = new lime.animation.Loop(
     	new lime.animation.RotateBy(5).setDuration(0.0025)
-    );
-    time_clock.runAction(keepturning);
+    ).addTarget(time_clock);
     
-    kangroo = new lime.Sprite().setFill('assets/img/kangroo2.png').setSize(567,567).setAnchorPoint(.5,.5).setPosition(512,384).setOpacity(0).setScale(0);
-    layer_bg.appendChild(kangroo);
+    jupmOutRotate = new lime.animation.Loop(
+    	new lime.animation.RotateBy(-5).setDuration(0.0025)
+    ).addTarget(time_clock);
     
-    zoomin = new lime.animation.Spawn(
+    jumpInRotate.play();
+    
+    layer_kangroo = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
+    
+    kangroo1 = new lime.Sprite().setFill('assets/img/kangroo1.png').setSize(567,567).setAnchorPoint(.5,.5).setPosition(512,384).setOpacity(0).setScale(0);
+    //kangroo2 = new lime.Sprite().setFill('assets/img/kangroo2.png').setSize(567,567).setAnchorPoint(.5,.5).setPosition(512,384).setScale(1.5);
+    //kangroo3 = new lime.Sprite().setFill('assets/img/kangroo3.png').setSize(567,567).setAnchorPoint(.5,.5).setPosition(512,384).setScale(1.5);
+    kangroo4 = new lime.Sprite().setFill('assets/img/kangroo4.png').setSize(567,567).setAnchorPoint(.5,.5).setPosition(512,384).setScale(1.5);
+    layer_kangroo.appendChild(kangroo1);
+    
+    jumpIn = new lime.animation.Spawn(
     	new lime.animation.ScaleTo(1.5).setDuration(2),
     	new lime.animation.FadeTo(1).setDuration(2),
     	new lime.animation.RotateBy(360).setDuration(2)
     );
-    kangroo.runAction(zoomin);
     
+    jumpOut = new lime.animation.Spawn(
+    	new lime.animation.ScaleTo(0).setDuration(2),
+    	new lime.animation.FadeTo(0).setDuration(2),
+    	new lime.animation.RotateBy(-360).setDuration(2)
+    ).addTarget(kangroo4);
+    
+    kangroo1.runAction(jumpIn);
+    
+    goog.events.listen(jumpIn,lime.animation.Event.STOP,function(){
+		layer_kangroo.removeChild(kangroo1);
+		layer_kangroo.appendChild(kangroo4);
+		jumpInRotate.stop();
+		jumpOut.play();
+		jupmOutRotate.play();
+	});
+    
+    goog.events.listen(jumpOut,lime.animation.Event.STOP,function(){
+		Jumper.Chapter1();
+	});
     
 	scene.appendChild(layer_bg);
+	scene.appendChild(layer_kangroo);
 	Jumper.director.replaceScene(scene,lime.transitions.Dissolve);
 }
 
@@ -285,16 +314,16 @@ Jumper.Chapter1 = function(){
 				ani_footprint = new lime.animation.FadeTo(1).addTarget(footprint[k]).setDuration(2).play();
 			}
 			show_walking.play();
+			timer = setTimeout(function(){
+				Jumper.fin_ch1 = true;
+				scene1();
+			}, 8000);
 		});
 		/*
 		goog.events.listen(show_walking,lime.animation.Event.STOP,function(){
 				scene.removeChild(layer_map);
 		});
 		*/
-		goog.events.listen(walking,['click','touchstart'],function(e){
-			Jumper.fin_ch1 = true;
-			scene1();
-		});
 	};
 	
 	function Game(scene){
@@ -347,10 +376,6 @@ Jumper.Chapter2 = function(){
 	
 	Jumper.director.replaceScene(scene,lime.transitions.Dissolve);
 };
-
-
-
-
 
 
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
