@@ -29,6 +29,8 @@ Jumper.start = function(){
 	Jumper.director.setDisplayFPS(false);
 	Jumper.fin_ch1 = false;
 	Jumper.fin_ch2 = false;
+	Jumper.fin_ch3 = false;
+	Jumper.fin_ch4 = false;
 }
 Jumper.ChapterSelection = function(){
 	scene = new lime.Scene();
@@ -103,7 +105,7 @@ Jumper.ChapterSelection = function(){
 	// set current scene active
 	Jumper.director.replaceScene(scene,lime.transitions.Dissolve);	
 };
-
+// Time travle animation
 Jumper.timeTravle = function(){
 	scene = new lime.Scene();
 	layer_bg = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
@@ -180,7 +182,6 @@ Jumper.Chapter1 = function(){
 		layer_charc.appendChild(charc);
 		scene.appendChild(layer_charc);
 		
-
 		// Character talking audio.
 		snd_part2 = new Audio('assets/audio/part_2.ogg');
 		snd_part1 = new Audio('assets/audio/part_1.ogg');
@@ -197,10 +198,19 @@ Jumper.Chapter1 = function(){
 				snd_part2.play();
 			}, 10000);
 		});
-		if(Jumper.fin_ch1 == true && Jumper.fin_ch2 == true){
+		putButton2();
+		
+		if(Jumper.fin_ch1 == true && Jumper.fin_ch2 == true && Jumper.fin_ch3 == true){
 			window.location.replace("/journal.html");
-		}else if(Jumper.fin_ch1 == false && Jumper.fin_ch2 == false){
+		}else if(Jumper.fin_ch1 == false && Jumper.fin_ch2 == false && Jumper.fin_ch3 == false){
 			snd_part1.play();
+		}else if(Jumper.fin_ch1 == true && Jumper.fin_ch2 == true){
+			putButton1();
+			putButton2();
+			putButton3();
+			timer = setTimeout(function(){
+					snd_part2.play();
+			}, 10000);
 		}else{
 			putButton1();
 			putButton2();
@@ -213,8 +223,8 @@ Jumper.Chapter1 = function(){
 		function putButton1(){
 			// Set the button of the white horse
 			layer_bnt1 = new lime.Layer().setPosition(585,260).setAnchorPoint(0,0).setSize(100,100);
-			test= new lime.Sprite().setStroke(2,'#FFFFFF').setSize(100,100).setPosition(0,0).setAnchorPoint(0,0);
-			layer_bnt1.appendChild(test);
+			bnt1 = new lime.Sprite().setStroke(2,'#FFFFFF').setSize(100,100).setPosition(0,0).setAnchorPoint(0,0);
+			layer_bnt1.appendChild(bnt1);
 			
 			var jQ_layer_bnt1 = $(layer_bnt1.getDeepestDomElement());
 			jQ_layer_bnt1.css('cursor', 'pointer');
@@ -233,8 +243,8 @@ Jumper.Chapter1 = function(){
 		function putButton2(){
 			// Set the button of the Gold game
 			layer_bnt2 = new lime.Layer().setPosition(485,550).setAnchorPoint(0,0).setSize(200,200);
-			test2= new lime.Sprite().setStroke(2,'#FFFFFF').setSize(100,100).setPosition(0,0).setAnchorPoint(0,0);
-			layer_bnt2.appendChild(test2);
+			bnt2 = new lime.Sprite().setStroke(2,'#FFFFFF').setSize(100,100).setPosition(0,0).setAnchorPoint(0,0);
+			layer_bnt2.appendChild(bnt2);
 			
 			var jQ_layer_bnt2 = $(layer_bnt2.getDeepestDomElement());
 			jQ_layer_bnt2.css('cursor', 'pointer');
@@ -249,7 +259,25 @@ Jumper.Chapter1 = function(){
 			});
 		}
 		
-		
+		function putButton3(){
+			layer_bnt3 = new lime.Layer().setPosition(120,320).setAnchorPoint(0,0).setSize(200,200);
+			bnt3 = new lime.Sprite().setStroke(2,'#FFFFFF').setSize(150,150).setPosition(0,0).setAnchorPoint(0,0);
+			layer_bnt3.appendChild(bnt3);
+			
+			var jQ_layer_bnt3 = $(layer_bnt3.getDeepestDomElement());
+			jQ_layer_bnt3.css('cursor', 'pointer');
+			scene.appendChild(layer_bnt3);
+			goog.events.listen(layer_bnt3,['click','touchstart'],function(e){
+				snd_part2.pause();
+				snd_part2.currentTime = 0;
+				clearTimeout(timer);
+				scene.removeChild(layer_bnt1);
+				scene.removeChild(layer_bnt2);
+				scene.removeChild(layer_bnt3);
+				Game(scene);
+			});
+			
+		}
 				
 				
 		Jumper.director.replaceScene(scene,lime.transitions.Dissolve);
@@ -264,11 +292,10 @@ Jumper.Chapter1 = function(){
 		snd_part3.play();
 		
 		snd_part3.addEventListener('ended', function(){
-			putButton1();
-			putButton2();
 			timer = setTimeout(function(){
-				snd_part2.play();
-			}, 10000);
+				Jumper.fin_ch1 = true;
+				scene1();
+			}, 5000);
 		});
 		
 		ship = new lime.Sprite().setFill('assets/ship.png').setSize(50,50).setPosition(300,200).setAnchorPoint(.5,.5)
@@ -322,10 +349,6 @@ Jumper.Chapter1 = function(){
 				ani_footprint = new lime.animation.FadeTo(1).addTarget(footprint[k]).setDuration(2).play();
 			}
 			show_walking.play();
-			timer = setTimeout(function(){
-				Jumper.fin_ch1 = true;
-				scene1();
-			}, 8000);
 		});
 		/*
 		goog.events.listen(show_walking,lime.animation.Event.STOP,function(){
@@ -335,7 +358,7 @@ Jumper.Chapter1 = function(){
 	};
 	
 	function Game(scene){
-		layer_video = new lime.Layer().setPosition(200,300).setAnchorPoint(.5,.5);
+		layer_video = new lime.Layer().setPosition(200,200).setAnchorPoint(.5,.5);
 		video_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
 		video = goog.dom.createDom('video');
 		/*
@@ -357,6 +380,7 @@ Jumper.Chapter1 = function(){
 		snd_part4.addEventListener('ended', function(){
 			video.src = 'assets/GT-Chinese.webm';
 			video.setAttribute('autoplay',true);
+			video.setAttribute('width', 800);
 			video_container.appendChild(video);
 			layer_video.appendChild(video_container);
 			scene.appendChild(layer_video);
@@ -366,9 +390,19 @@ Jumper.Chapter1 = function(){
 			Jumper.fin_ch2 = true;
 			Jumper.gameIntro();
 		});
+
+	};
+	
+	function Task3(scene){
+		layer_video = new lime.Layer().setPosition(200,300).setAnchorPoint(.5,.5);
+		video_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
+		video = goog.dom.createDom('video');
 		
-		
-		
+		video.addEventListener('ended', function(){
+			console.log("123");
+			snd_part5.play();
+			scene.removeChild(layer_video);
+		});
 	};
 };
 
