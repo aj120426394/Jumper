@@ -10,7 +10,7 @@ Jumper.intro1 = function(){
 	var guy = new lime.Sprite().setFill('assets/img/museum-guide1.png').setSize(191,238).setPosition(800,600).setAnchorPoint(0.5,0.5);
 	layer.appendChild(guy);
 	
-	var animated_guy = new lime.Sprite().setFill('assets/img/museum-guy2.gif').setSize(185,232).setPosition(800,598).setAnchorPoint(0.5,0.5);
+	var animated_guy = new lime.Sprite().setFill('assets/img/museum-guy2.gif').setSize(191,238).setPosition(800,600).setAnchorPoint(0.5,0.5);
 	
 	var roo = new lime.Sprite().setFill('assets/img/kangroo1.png').setSize(191,238).setPosition(-200,400).setAnchorPoint(0.5,0.5);
 	layer.appendChild(roo);
