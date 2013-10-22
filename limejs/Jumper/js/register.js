@@ -23,6 +23,7 @@ $(document).ready(function(){
             user.set("username", username);
             user.set("password", password);
             user.set("email", email);
+            user.set("tutDone",false);
             user.signUp(null, {
               success: function(user) {
                 // Hooray! Let them use the app now.

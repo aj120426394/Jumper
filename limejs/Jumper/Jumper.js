@@ -20,11 +20,17 @@ goog.require('goog.style');
 goog.require('lime.scheduleManager');
 goog.require('lime.audio.Audio');
 
+Parse.initialize("67U33LB7BRGpGARddbJvshafxX5voTzvlY4gWlWE", "a9E5kBevwjKHlxcZh8ALAhmuLvrH66Lt2mjsaSXl");
 // entrypoint
 Jumper.start = function(){
-
-	Jumper.director = new lime.Director(document.body,1024,768),
-	Jumper.intro1();
+	Jumper.currentUser = Parse.User.current();
+	Jumper.director = new lime.Director(document.body,1024,768);
+	if(Jumper.currentUser.get("tutDone")){
+		Jumper.ChapterSelection();
+	}else{
+		Jumper.intro1();
+	}
+	
 	Jumper.director.makeMobileWebAppCapable();
 	Jumper.director.setDisplayFPS(false);
 	Jumper.fin_ch1 = false;
