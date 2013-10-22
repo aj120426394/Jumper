@@ -7,7 +7,7 @@ Jumper.intro1 = function(){
 	var museum = new lime.Sprite().setFill('assets/museum.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
 	layer.appendChild(museum);
 	
-	var guy = new lime.Sprite().setFill('assets/img/museum-guide.png').setSize(191,238).setPosition(800,600).setAnchorPoint(0.5,0.5);
+	var guy = new lime.Sprite().setFill('assets/img/museum-guide1.png').setSize(191,238).setPosition(800,600).setAnchorPoint(0.5,0.5);
 	layer.appendChild(guy);
 	
 	var animated_guy = new lime.Sprite().setFill('assets/img/museum-guy2.gif').setSize(185,232).setPosition(800,598).setAnchorPoint(0.5,0.5);
