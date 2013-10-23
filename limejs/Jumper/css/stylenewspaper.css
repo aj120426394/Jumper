@@ -1,0 +1,65 @@
+html{
+	background: #60311B;
+}
+
+body{
+	font-family: 'Andika', sans-serif;
+}
+
+.frame{
+	width: 800px;
+	height: 600px;
+	background:url('../assets/newspaper.jpg');
+	background-size: 800px 600px;
+	background-repeat:no-repeat;
+	margin: auto;
+	padding: 50px;
+	overflow: scroll;
+}
+
+.articlenewspaper {
+	font-size: 3em;
+	font-family: 'Rokkitt', serif;
+	text-align: center;
+	border-bottom-style: solid;
+	boder-width: 5px;
+}
+
+.articletitle {
+	font-size:2.5em;
+	font-weight: bold;
+	font-family: 'Cutive Mono', serif;
+	margin: 30px 0px 30px 0px;
+}
+
+.articledate {
+	font-size:0.9em;
+	font-family: 'Cutive Mono', serif;
+}
+
+.articletext {
+	font-size:0.9em;
+	font-family: 'Cutive Mono', serif;
+}
+
+#lefthand {
+	position: fixed;
+	top: 7%;
+	left: 8%;
+}
+
+#lefthandimg {
+	height: 30px;
+	width: 60px;
+}
+
+#righthand {
+	position: fixed;
+	top: 7%;
+	left: 80%;
+}
+
+#righthandimg {
+	height: 30px;
+	width: 60px;
+}

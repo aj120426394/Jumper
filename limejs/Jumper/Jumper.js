@@ -33,10 +33,10 @@ Jumper.start = function(){
 	
 	Jumper.director.makeMobileWebAppCapable();
 	Jumper.director.setDisplayFPS(false);
-	Jumper.fin_ch1 = false;
-	Jumper.fin_ch2 = false;
-	Jumper.fin_ch3 = false;
-	Jumper.fin_ch4 = false;
+	Jumper.fin_task1 = true;
+	Jumper.fin_task2 = true;
+	Jumper.fin_task3 = false;
+	Jumper.fin_task4 = false;
 }
 Jumper.intro1 = function(){
 	var scene = new lime.Scene();
@@ -432,8 +432,11 @@ Jumper.Chapter1 = function(){
 		scene.appendChild(layer_charc);
 		
 		// Character talking audio.
-		snd_part2 = new Audio('assets/audio/part_2.ogg');
-		snd_part1 = new Audio('assets/audio/part_1.ogg');
+		snd_part1 = new Audio('assets/audio/GF1_part1.ogg');
+		snd_part2 = new Audio('assets/audio/GF1_part2.ogg');
+		snd_part5 = new Audio('assets/audio/GF1_part5.ogg');
+		snd_part6 = new Audio('assets/audio/GF1_part6.ogg');
+		
 		
 		snd_part1.addEventListener('ended', function(){
 			putButton1();
@@ -447,25 +450,50 @@ Jumper.Chapter1 = function(){
 				snd_part2.play();
 			}, 10000);
 		});
-		putButton2();
-		
-		if(Jumper.fin_ch1 == true && Jumper.fin_ch2 == true && Jumper.fin_ch3 == true){
-			window.location.replace("/journal.html");
-		}else if(Jumper.fin_ch1 == false && Jumper.fin_ch2 == false && Jumper.fin_ch3 == false){
-			snd_part1.play();
-		}else if(Jumper.fin_ch1 == true && Jumper.fin_ch2 == true){
+		snd_part5.addEventListener('ended',function(){
 			putButton1();
 			putButton2();
 			putButton3();
+			putButton4();
 			timer = setTimeout(function(){
-					snd_part2.play();
+				snd_part6.play();
 			}, 10000);
+		});
+		snd_part6.addEventListener('ended',function(){
+			timer = setTimeout(function(){
+				snd_part6.play();
+			}, 10000);
+		});
+		
+		if(Jumper.fin_task1 == true && Jumper.fin_task2 == true){
+			// Finish first part
+			if(Jumper.fin_task3 == true && Jumper.fin_task4 == true){
+				// Finish all task
+				window.location.replace("/journal.html");
+			}else{
+				if(Jumper.fin_task3 == true || Jumper.fin_task4 == true){
+					putButton1();
+					putButton2();
+					putButton3();
+					putButton4();
+					timer = setTimeout(function(){
+						snd_part6.play();
+					}, 10000);
+				}else{
+					snd_part5.play();
+				}
+			}
 		}else{
-			putButton1();
-			putButton2();
-			timer = setTimeout(function(){
-					snd_part2.play();
-			}, 10000);
+			if(Jumper.fin_task1 == true || Jumper.fin_task2 == true){
+				putButton1();
+				putButton2();
+				timer = setTimeout(function(){
+						snd_part2.play();
+				}, 10000);
+			}else{
+				// The beginning
+				snd_part1.play();
+			}
 		}
 		
 		
@@ -510,22 +538,43 @@ Jumper.Chapter1 = function(){
 		
 		function putButton3(){
 			layer_bnt3 = new lime.Layer().setPosition(120,320).setAnchorPoint(0,0).setSize(200,200);
-			bnt3 = new lime.Sprite().setStroke(2,'#FFFFFF').setSize(150,150).setPosition(0,0).setAnchorPoint(0,0);
+			bnt3 = new lime.Sprite().setStroke(2,'#DE3C3C').setSize(150,150).setPosition(0,0).setAnchorPoint(0,0);
 			layer_bnt3.appendChild(bnt3);
 			
 			var jQ_layer_bnt3 = $(layer_bnt3.getDeepestDomElement());
 			jQ_layer_bnt3.css('cursor', 'pointer');
 			scene.appendChild(layer_bnt3);
 			goog.events.listen(layer_bnt3,['click','touchstart'],function(e){
-				snd_part2.pause();
-				snd_part2.currentTime = 0;
+				snd_part6.pause();
+				snd_part6.currentTime = 0;
 				clearTimeout(timer);
 				scene.removeChild(layer_bnt1);
 				scene.removeChild(layer_bnt2);
 				scene.removeChild(layer_bnt3);
-				Game(scene);
+				scene.removeChild(layer_bnt4);
+				Task3(scene);
 			});
 			
+		}
+		
+		function putButton4(){
+			layer_bnt4 = new lime.Layer().setPosition(550,720).setAnchorPoint(0,0).setSize(200,200);
+			
+			bnt4 = new lime.Sprite().setFill('assets/img/newspaper.png').setSize(150,150).setPosition(0,0).setAnchorPoint(.5,.5);
+			layer_bnt4.appendChild(bnt4);
+			var jQ_layer_bnt4 = $(layer_bnt4.getDeepestDomElement());
+			jQ_layer_bnt4.css('cursor', 'pointer');
+			scene.appendChild(layer_bnt4);
+			goog.events.listen(layer_bnt4,['click','touchstart'],function(e){
+				snd_part6.pause();
+				snd_part6.currentTime = 0;
+				clearTimeout(timer);
+				scene.removeChild(layer_bnt1);
+				scene.removeChild(layer_bnt2);
+				scene.removeChild(layer_bnt3);
+				scene.removeChild(layer_bnt4);
+				Task4(scene);
+			});
 		}
 				
 				
@@ -537,12 +586,12 @@ Jumper.Chapter1 = function(){
 		layer_map = new lime.Layer().setPosition(-500,-500).setAnchorPoint(.5,.5);
 		background_map = new lime.Sprite().setFill('assets/chn_au_map.jpg').setSize(700,600).setPosition(0,0).setAnchorPoint(0,0);
 		layer_map.appendChild(background_map);
-		snd_part3 = new Audio('assets/audio/part_3.ogg');
+		snd_part3 = new Audio('assets/audio/GF1_part3a.ogg');
 		snd_part3.play();
 		
 		snd_part3.addEventListener('ended', function(){
 			timer = setTimeout(function(){
-				Jumper.fin_ch1 = true;
+				Jumper.fin_task1 = true;
 				scene1();
 			}, 5000);
 		});
@@ -607,7 +656,7 @@ Jumper.Chapter1 = function(){
 	};
 	
 	function Game(scene){
-		layer_video = new lime.Layer().setPosition(200,200).setAnchorPoint(.5,.5);
+		layer_video = new lime.Layer().setPosition(200,100).setAnchorPoint(.5,.5);
 		video_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
 		video = goog.dom.createDom('video');
 		/*
@@ -622,12 +671,12 @@ Jumper.Chapter1 = function(){
 			scene.removeChild(layer_video);
 		});
 		
-		snd_part4 = new Audio('assets/audio/part_4.ogg');
-		snd_part5 = new Audio('assets/audio/part_5.ogg');
+		snd_part4 = new Audio('assets/audio/GF1_part3b.ogg');
+		snd_part5 = new Audio('assets/audio/GF1_part4.ogg');
 		
 		snd_part4.play();
 		snd_part4.addEventListener('ended', function(){
-			video.src = 'assets/GT-Chinese.webm';
+			video.src = 'assets/Gold_panning.mp4';
 			video.setAttribute('autoplay',true);
 			video.setAttribute('width', 800);
 			video_container.appendChild(video);
@@ -636,22 +685,69 @@ Jumper.Chapter1 = function(){
 		});
 		
 		snd_part5.addEventListener('ended', function(){
-			Jumper.fin_ch2 = true;
+			Jumper.fin_task2 = true;
 			Jumper.gameIntro();
 		});
 
 	};
 	
 	function Task3(scene){
-		layer_video = new lime.Layer().setPosition(200,300).setAnchorPoint(.5,.5);
-		video_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
-		video = goog.dom.createDom('video');
+		var layer_video = new lime.Layer().setPosition(200,100).setAnchorPoint(.5,.5);
+		var video_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
+		var snd_part7b1 = new Audio('assets/audio/GF1_part7b_1.ogg');
+		var video = goog.dom.createDom('video');
 		
 		video.addEventListener('ended', function(){
 			console.log("123");
-			snd_part5.play();
 			scene.removeChild(layer_video);
+			scene1();
 		});
+		
+		snd_part7b1.play();
+		snd_part7b1.addEventListener('ended', function(){
+			video.src = 'assets/GT-Chinese.webm';
+			video.setAttribute('autoplay',true);
+			video.setAttribute('width', 800);
+			video_container.appendChild(video);
+			layer_video.appendChild(video_container);
+			scene.appendChild(layer_video);
+		});
+
+		
+	};
+	
+	function Task4(scene){
+		var layer_news = new lime.Layer().setPosition(100,100).setAnchorPoint(.5,.5);
+		var news_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
+		var snd_part7a1 = new Audio('assets/audio/GF1_part7a_1.ogg');
+		var snd_part7a2 = new Audio('assets/audio/GF1_part7a_2.ogg');
+		var click_after_read = new lime.Label().setText('Click after you finish reading'). setFontFamily('Verdana').setFill('assets/img/click_bg.png').setFontSize(26).
+			setFontWeight('bold').setSize(400,200);
+			
+		var iframe = '<iframe width = "800" height = "600" src="testtrovenewspaper.html"></iframe>';
+		
+		var div = document.createElement('div');
+		div.setAttribute('width', 800);
+		div.setAttribute('height', 600);
+		div.innerHTML = iframe;
+
+		news_container.appendChild(div);
+		snd_part7a1.play();
+		snd_part7a1.addEventListener('ended', function(){
+			console.log("test");
+			/*
+			window.open('testtrovenewspaper.html',
+			    'open_window',
+			    'menubar, toolbar, location, directories, status, scrollbars, resizable, dependent, width=640, height=480, left=0, top=0');
+			    layer_news.appendChild(click_after_read);
+			    */
+		});
+		
+				
+		
+		layer_news.appendChild(news_container);
+		scene.appendChild(layer_news);
+		
 	};
 };
 

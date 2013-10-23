@@ -126,6 +126,7 @@ Jumper.gameEnd = function(){
 	snd_part6.play();
 	});
 	snd_part6.addEventListener('ended', function(){
+		Jumper.fin_task2 = true;
 		Jumper.Chapter1();
 	});
 	
