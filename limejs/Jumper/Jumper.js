@@ -33,8 +33,8 @@ Jumper.start = function(){
 	
 	Jumper.director.makeMobileWebAppCapable();
 	Jumper.director.setDisplayFPS(false);
-	Jumper.fin_task1 = true;
-	Jumper.fin_task2 = true;
+	Jumper.fin_task1 = false;
+	Jumper.fin_task2 = false;
 	Jumper.fin_task3 = false;
 	Jumper.fin_task4 = false;
 }
@@ -357,7 +357,6 @@ Jumper.timeTravle = function(nextStep){
     kangroo4 = new lime.Sprite().setFill('assets/img/kangroo4.png').setSize(567,567).setAnchorPoint(.5,.5).setPosition(512,384).setScale(1.5);
     layer_kangroo.appendChild(kangroo1);
     
-    ;
     jumpIn = new lime.animation.Spawn(
     	new lime.animation.ScaleTo(1.5).setDuration(2.5),
     	new lime.animation.FadeTo(1).setDuration(2.5),
@@ -469,7 +468,8 @@ Jumper.Chapter1 = function(){
 			// Finish first part
 			if(Jumper.fin_task3 == true && Jumper.fin_task4 == true){
 				// Finish all task
-				window.location.replace("/journal.html");
+				Jumper.game2(scene);
+				//Jumper.final1(scene);
 			}else{
 				if(Jumper.fin_task3 == true || Jumper.fin_task4 == true){
 					putButton1();
@@ -700,6 +700,7 @@ Jumper.Chapter1 = function(){
 		video.addEventListener('ended', function(){
 			console.log("123");
 			scene.removeChild(layer_video);
+			Jumper.fin_task3 = true;
 			scene1();
 		});
 		
@@ -717,12 +718,14 @@ Jumper.Chapter1 = function(){
 	};
 	
 	function Task4(scene){
-		var layer_news = new lime.Layer().setPosition(100,100).setAnchorPoint(.5,.5);
+		var layer_news = new lime.Layer().setPosition(200,100).setAnchorPoint(.5,.5);
 		var news_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
 		var snd_part7a1 = new Audio('assets/audio/GF1_part7a_1.ogg');
 		var snd_part7a2 = new Audio('assets/audio/GF1_part7a_2.ogg');
-		var click_after_read = new lime.Label().setText('Click after you finish reading'). setFontFamily('Verdana').setFill('assets/img/click_bg.png').setFontSize(26).
-			setFontWeight('bold').setSize(400,200);
+		var click_after_read = new lime.Label().setText('Click after you finish reading'). setFontFamily('Verdana').setFill('assets/img/click_bg.png').setFontSize(15).
+			setFontWeight('bold').setSize(300,50).setPosition(600,50).setLineHeight(2.5);
+		var jQ_layer_click_after_read = $(click_after_read.getDeepestDomElement());
+			jQ_layer_click_after_read.css('cursor', 'pointer');
 			
 		var iframe = '<iframe width = "800" height = "600" src="testtrovenewspaper.html"></iframe>';
 		
@@ -731,20 +734,24 @@ Jumper.Chapter1 = function(){
 		div.setAttribute('height', 600);
 		div.innerHTML = iframe;
 
-		news_container.appendChild(div);
+		
 		snd_part7a1.play();
 		snd_part7a1.addEventListener('ended', function(){
-			console.log("test");
-			/*
-			window.open('testtrovenewspaper.html',
-			    'open_window',
-			    'menubar, toolbar, location, directories, status, scrollbars, resizable, dependent, width=640, height=480, left=0, top=0');
-			    layer_news.appendChild(click_after_read);
-			    */
+			news_container.appendChild(div);
+			scene.appendChild(click_after_read);
 		});
 		
-				
-		
+		goog.events.listen(click_after_read,['click','touchstart'],function(e){
+			snd_part7a2.play();
+		});
+		snd_part7a2.addEventListener('ended', function(){
+			news_container.appendChild(div);
+			scene.removeChild(click_after_read);
+			scene.removeChild(layer_news);
+			Jumper.fin_task4 = true;
+			scene1();
+		});
+
 		layer_news.appendChild(news_container);
 		scene.appendChild(layer_news);
 		
@@ -764,6 +771,293 @@ Jumper.Chapter2 = function(){
 	Jumper.director.replaceScene(scene,lime.transitions.Dissolve);
 };
 
+Jumper.game2 = function(scene){
+	
+	var layer = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
+	scene.appendChild(layer);
+	
+	//var background = new lime.Sprite().setFill('assets/goldfield2.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
+	//layer.appendChild(background);
+	
+	var paper = new lime.Sprite().setFill('assets/paper.png').setSize(125,50).setPosition(100,100).setAnchorPoint(0.5,0.5);
+	layer.appendChild(paper);
+	
+	var panel = new lime.Sprite().setFill('assets/score box.png').setSize(500,50).setPosition(512,700).setAnchorPoint(.5,0);
+	layer.appendChild(panel);
+	
+	var inst = new lime.Label().setPosition(512, 710).setAnchorPoint(0.5,0).setText('Click on the piece of paper!').setFontSize(24).setFontWeight('bold');
+	layer.appendChild(inst);
+	
+	goog.events.listen(paper,['mousedown','touchstart'],function(e){
+	
+	layer.removeChild(panel);
+	layer.removeChild(inst);
+	
+    clearInterval(animation);
+	wind_sound.pause();
+	var scale = new lime.animation.Spawn(
+		new lime.animation.ScaleTo(2),
+		new lime.animation.MoveTo(512,384),
+		new lime.animation.RotateTo(0)
+    );
+	snd_part8b = new Audio('assets/audio/GF1_part8b.ogg')
+	snd_part8b.addEventListener('ended', function(){
+		scene.removeChild(layer);
+		Jumper.final1(scene);
+	});
+	
+	
+	setTimeout(function(){
+	layer.removeChild(paper);
+	var paper1 = new lime.Sprite().setFill('assets/grclue.png').setSize(500,200).setPosition(512,384).setAnchorPoint(0.5,0.5);
+	layer.appendChild(paper1);
+	//put next scene transition here
+	snd_part8b.play();
+	},1000);
+	
+	paper.runAction(scale);
+	
+	});
+	
+	wind_sound = new Audio('assets/wind.mp3'); 
+	snd_part8a = new Audio('assets/audio/GF1_part8a.ogg');
+	wind_sound.play();
+	snd_part8a.play();
+	
+	wind_sound.addEventListener('ended', function(){
+	wind_sound.play();
+	});
+	
+	
+	//Jumper.director.replaceScene(scene);
+	
+	randomx = Math.floor((Math.random()*386)+575);
+	randomy = Math.floor((Math.random()*600)+25);
+	var move = new lime.animation.MoveTo(randomx, randomy);
+	paper.runAction(move);
+	
+	side = 0;
+	
+	var animation = setInterval(function(){
+		if (side == 0) {
+			randomx = Math.floor((Math.random()*386)+63);
+			randomy = Math.floor((Math.random()*600)+25);
+			var move = new lime.animation.Spawn(
+				new lime.animation.MoveTo(randomx, randomy).setDuration(1),
+				new lime.animation.RotateBy(45)
+			);
+			paper.runAction(move);
+			side = 1;
+		}
+		else {
+			randomx = Math.floor((Math.random()*386)+575);
+			randomy = Math.floor((Math.random()*600)+25);
+			var move = new lime.animation.Spawn(
+				new lime.animation.MoveTo(randomx, randomy).setDuration(1),
+				new lime.animation.RotateBy(-90)
+			);
+			paper.runAction(move);
+			side = 0;
+		}
+	}
+	,1000);
+	
+};
 
+Jumper.final1 = function(scene){
+	var layer_roo = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
+	var roo = new lime.Sprite().setFill('assets/img/kangroo2.png').setSize(567,567).setPosition(1200,400).setAnchorPoint(0.5,0.5);
+	var snd_part9 = new Audio('assets/audio/GF1_part9.ogg');
+	snd_part9.play();
+	var jumpIn = new lime.animation.Spawn(
+    	new lime.animation.ScaleTo(1.5).setDuration(2.5),
+    	new lime.animation.FadeTo(1).setDuration(2.5),
+    	new lime.animation.MoveTo(800,600).setDuration(2.5)
+    );
+    
+    goog.events.listen(roo,['click','touchstart'],function(e){
+    	window.location = 'journal.html'
+	});
+    roo.runAction(jumpIn);
+    
+    layer_roo.appendChild(roo);
+    scene.appendChild(layer_roo);
+};
+
+var points = 0;
+
+Jumper.gameIntro = function(){
+	var scene = new lime.Scene();
+	
+	var layer = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
+	scene.appendChild(layer);
+	
+	var background = new lime.Sprite().setFill('assets/goldfield.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
+	layer.appendChild(background);
+	
+	var panel = new lime.Sprite().setFill('assets/dialog box.png').setSize(500,500).setPosition(512,384).setAnchorPoint(0.5,0.5);
+	layer.appendChild(panel);
+	
+	Jumper.description = new lime.Label().setPosition(512, 234).setSize(350,0).setAnchorPoint(0.5,0).setText('Collect as many gold nuggets as you can in 30 seconds!').setFontSize(28).setFontWeight('bold');
+	scene.appendChild(Jumper.description);
+	
+	Jumper.description2 = new lime.Label().setPosition(512, 354).setSize(350,0).setAnchorPoint(0.5,0).setText('(Click and drag them into the basket)').setFontSize(28).setFontWeight('bold');
+	scene.appendChild(Jumper.description2);
+	
+	var button = new lime.Sprite().setFill('assets/login_btn.png').setSize(184,65).setPosition(512,450).setAnchorPoint(0.5,0);
+	layer.appendChild(button);
+	
+	Jumper.play = new lime.Label().setPosition(512, 467).setText('Start').setFontSize(28).setFontWeight('bold').setAnchorPoint(0.5,0);
+	scene.appendChild(Jumper.play);
+	
+	sound1 = new Audio('assets/button.mp3'); 
+	
+	goog.events.listen(button,['mousedown','touchstart'],function(e){
+	sound1.play();
+    Jumper.gameMain();
+	});
+	
+	
+	Jumper.director.replaceScene(scene);
+};
+ 
+Jumper.gameMain = function(){
+
+
+	var scene = new lime.Scene();
+	
+	var layer = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
+	scene.appendChild(layer);
+	
+	var background = new lime.Sprite().setFill('assets/goldfield.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
+	layer.appendChild(background);
+	
+	var panel = new lime.Sprite().setFill('assets/score box.png').setSize(500,50).setPosition(512,700).setAnchorPoint(.5,0);
+	layer.appendChild(panel);
+	
+	Jumper.score = new lime.Label().setPosition(512, 710).setAnchorPoint(0.5,0).setText('Gold Nuggets Collected: ' + points).setFontSize(24).setFontWeight('bold');
+	scene.appendChild(Jumper.score);
+	
+	var drop1 = Jumper.drop1 = makeDroppable().setPosition(512, 550).setAnchorPoint(0.5,0.5);
+	layer.appendChild(drop1);
+	
+	randomx = Math.floor((Math.random()*954)+35);
+	randomy = Math.floor((Math.random()*320)+35);
+	var drag1 = makeDraggable().setPosition(randomx, randomy);
+	layer.appendChild(drag1);
+	
+	randomx = Math.floor((Math.random()*954)+35);
+	randomy = Math.floor((Math.random()*320)+35);
+	var drag2 = makeDraggable().setPosition(randomx, randomy);
+	layer.appendChild(drag2);
+	
+	randomx = Math.floor((Math.random()*954)+35);
+	randomy = Math.floor((Math.random()*320)+35);
+	var drag3 = makeDraggable().setPosition(randomx, randomy);
+	layer.appendChild(drag3);
+	
+	randomx = Math.floor((Math.random()*954)+35);
+	randomy = Math.floor((Math.random()*320)+35);
+	var drag4 = makeDraggable().setPosition(randomx, randomy);
+	layer.appendChild(drag4);
+	
+	randomx = Math.floor((Math.random()*954)+35);
+	randomy = Math.floor((Math.random()*320)+35);
+	var drag5 = makeDraggable().setPosition(randomx, randomy);
+	layer.appendChild(drag5);
+	
+	timer = 30;
+	Jumper.timer = new lime.Label().setPosition(512, 640).setAnchorPoint(0.5,0).setText(timer).setFontSize(48).setFontWeight('bold').setFontColor('#c00');
+	scene.appendChild(Jumper.timer);
+	
+	Jumper.director.replaceScene(scene);
+	
+	setTimeout(function(){
+	clearInterval(countdown);
+	Jumper.gameEnd()
+	},31000);
+	
+	countdown = setInterval(function(){
+	timer--;
+	Jumper.timer.setText(timer);
+	},1000);
+};
+
+Jumper.gameEnd = function(){
+	var scene = new lime.Scene();
+	
+	var layer = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
+	scene.appendChild(layer);
+	
+	var background = new lime.Sprite().setFill('assets/goldfield.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
+	layer.appendChild(background);
+
+	var panel = new lime.Sprite().setFill('assets/dialog box.png').setSize(500,500).setPosition(512,384).setAnchorPoint(0.5,0.5);
+	layer.appendChild(panel);
+	
+	Jumper.timesup = new lime.Label().setPosition(512, 234).setText('Times up!').setFontSize(48).setFontWeight('bold');
+	scene.appendChild(Jumper.timesup);
+	
+	Jumper.finalscore = new lime.Label().setPosition(512, 300).setSize(350,0).setText('Well done! You collected ' + points + ' gold nuggets.').setFontSize(28).setFontWeight('bold');
+	scene.appendChild(Jumper.finalscore);
+	
+	var button = new lime.Sprite().setFill('assets/login_btn.png').setSize(184,65).setPosition(512,450).setAnchorPoint(0.5,0);
+	layer.appendChild(button);
+	
+	Jumper.go = new lime.Label().setPosition(512, 467).setText('Continue').setFontSize(28).setFontWeight('bold').setAnchorPoint(0.5,0);
+	scene.appendChild(Jumper.go);
+	
+	goog.events.listen(Jumper.go,['mousedown','touchstart'],function(e){
+		Jumper.fin_task2 = true;
+		Jumper.Chapter1();
+	});	
+	sound1 = new Audio('assets/button.mp3'); 
+	
+	Jumper.director.replaceScene(scene);
+};
+
+function makeDraggable() {
+	var sprite = new lime.Sprite().setSize(70, 70).setFill('assets/gold.png');
+	goog.events.listen(sprite, 'mousedown', function(e){
+		var drag = e.startDrag(false, null, sprite); // snaptocenter, bounds, target
+		
+		// Add drop targets.
+		drag.addDropTarget(Jumper.drop1);
+		
+		// Avoid dragging multiple items together
+		e.event.stopPropagation();
+		
+		// Drop into target and animate
+		goog.events.listen(drag, lime.events.Drag.Event.DROP, function(e){
+			console.log('item was dropped');
+			var dropTarget = e.activeDropTarget;
+			sound2 = new Audio('assets/gold.mp3'); 
+			sound2.play();
+		  
+			e.moveEndedCallback = function(){
+			console.log('Called after animation has ended');
+			randomx = Math.floor((Math.random()*954)+35);
+			randomy = Math.floor((Math.random()*370)+35);
+			sprite.setPosition(randomx, randomy);
+			points++;
+			Jumper.score.setText('Gold Nuggets Collected: ' + points);
+			}
+		});
+	});
+	
+	return sprite;
+};
+
+function makeDroppable() {
+	var sprite = new lime.Sprite().setSize(150, 150).setFill('assets/basket.png');
+	sprite.showDropHighlight = function(){
+    this.runAction(new lime.animation.FadeTo(.6).setDuration(.3));
+	};
+	sprite.hideDropHighlight = function(){
+    this.runAction(new lime.animation.FadeTo(1).setDuration(.1));
+	};
+  
+	return sprite; 
+};
 //this is required for outside access after code is compiled in ADVANCED_COMPILATIONS mode
 goog.exportSymbol('Jumper.start', Jumper.start);
