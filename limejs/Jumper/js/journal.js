@@ -17,6 +17,7 @@ $(document).ready(function() {
     $('#clue1small').hide();
     $('#museumguidegif').hide();
     
+    // forced login used for testing only
     //Parse.User.logIn(username, password, {
     //	success: function(user) {
     //    	// Do stuff after successful login.
@@ -194,10 +195,11 @@ function endpart1() {
 	setTimeout (function() {
 		$('#museumguideimage').show();
 		$('#museumguidegif').hide()},
-		35000);
+		25000);
 }
 
 function playpart2() {
+	stopallaudioandgifs();
 		document.getElementById('part2').play();
 		$('#museumguideimage').hide();
 		$('#museumguidegif').show();
@@ -208,10 +210,11 @@ function endpart2() {
 	setTimeout (function() {
 		$('#museumguideimage').show();
 		$('#museumguidegif').hide()},
-		11000);
+		10000);
 }
 
 function playpart3() {
+	stopallaudioandgifs();
 		document.getElementById('part3').play();
 		$('#museumguideimage').hide();
 		$('#museumguidegif').show();
@@ -226,6 +229,7 @@ function endpart3() {
 }
 
 function playpart4() {
+	stopallaudioandgifs();
 		document.getElementById('part4').play();
 		$('#museumguideimage').hide();
 		$('#museumguidegif').show();
@@ -240,6 +244,7 @@ function endpart4() {
 }
 
 function playpart5() {
+	stopallaudioandgifs();
 		document.getElementById('part5').play();
 		$('#museumguideimage').hide();
 		$('#museumguidegif').show();
@@ -252,10 +257,11 @@ function endpart5() {
 		$('#museumguidegif').hide();
 		window.location.href = '../limejs/jumper/Jumper.html';
 		},
-		14000);
+		13000);
 }
 
 function playpart6() {
+	stopallaudioandgifs();
 		document.getElementById('part6').play();
 		$('#museumguideimage').hide();
 		$('#museumguidegif').show();
@@ -266,10 +272,11 @@ function endpart6() {
 	setTimeout (function() {
 		$('#museumguideimage').show();
 		$('#museumguidegif').hide()},
-		7000);
+		6000);
 }
 
 function playpart7() {
+	stopallaudioandgifs();
 		document.getElementById('part7').play();
 		$('#museumguideimage').hide();
 		$('#museumguidegif').show();
@@ -280,6 +287,25 @@ function endpart7() {
 	setTimeout (function() {
 		$('#museumguideimage').show();
 		$('#museumguidegif').hide()},
-		5000);
+		4000);
+}
+
 function stopallaudioandgifs() {
+	console.log("Trying to stop all audio");
+	part1.pause();
+	part1.currentTime = 0;
+	part2.pause();
+	part2.currentTime = 0;
+	part3.pause();
+	part3.currentTime = 0;
+	part4.pause();
+	part4.currentTime = 0;
+	part5.pause();
+	part5.currentTime = 0;
+	part6.pause();
+	part6.currentTime = 0;
+	part7.pause();
+	part7.currentTime = 0;
+	$('#museumguideimage').show();
+	$('#museumguidegif').hide();
 }
