@@ -343,7 +343,7 @@ Jumper.timeTravle = function(nextStep){
     	new lime.animation.RotateBy(-5).setDuration(0.0025)
     ).addTarget(time_clock);
     
-    snd_timeTravel = new Audio('assets/audio/timeTravle.mp3');
+    snd_timeTravel = new Audio('assets/audio/timeTravle.ogg');
     
     
     snd_timeTravel.play();
@@ -819,7 +819,7 @@ Jumper.game2 = function(scene){
 	
 	});
 	
-	wind_sound = new Audio('assets/wind.mp3'); 
+	wind_sound = new Audio('assets/wind.ogg'); 
 	snd_part8a = new Audio('assets/audio/GF1_part8a.ogg');
 	wind_sound.play();
 	snd_part8a.play();
@@ -910,7 +910,7 @@ Jumper.gameIntro = function(){
 	Jumper.play = new lime.Label().setPosition(512, 467).setText('Start').setFontSize(28).setFontWeight('bold').setAnchorPoint(0.5,0);
 	scene.appendChild(Jumper.play);
 	
-	sound1 = new Audio('assets/button.mp3'); 
+	sound1 = new Audio('assets/button.ogg'); 
 	
 	goog.events.listen(button,['mousedown','touchstart'],function(e){
 	sound1.play();
@@ -1011,7 +1011,7 @@ Jumper.gameEnd = function(){
 		Jumper.fin_task2 = true;
 		Jumper.Chapter1();
 	});	
-	sound1 = new Audio('assets/button.mp3'); 
+	sound1 = new Audio('assets/button.ogg'); 
 	
 	Jumper.director.replaceScene(scene);
 };
@@ -1031,7 +1031,7 @@ function makeDraggable() {
 		goog.events.listen(drag, lime.events.Drag.Event.DROP, function(e){
 			console.log('item was dropped');
 			var dropTarget = e.activeDropTarget;
-			sound2 = new Audio('assets/gold.mp3'); 
+			sound2 = new Audio('assets/gold.ogg'); 
 			sound2.play();
 		  
 			e.moveEndedCallback = function(){
