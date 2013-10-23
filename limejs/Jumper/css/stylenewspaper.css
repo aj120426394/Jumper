@@ -5,10 +5,17 @@ html{
 body{
 	font-family: 'Andika', sans-serif;
 }
+html, body {
+    width: 90%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: green;
+}
 
 .frame{
-	width: 800px;
-	height: 600px;
+	width: inherit;
+	height: inherit;
 	background:url('../assets/newspaper.jpg');
 	background-size: 800px 600px;
 	background-repeat:no-repeat;
