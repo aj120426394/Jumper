@@ -281,4 +281,5 @@ function endpart7() {
 		$('#museumguideimage').show();
 		$('#museumguidegif').hide()},
 		5000);
+function stopallaudioandgifs() {
 }
