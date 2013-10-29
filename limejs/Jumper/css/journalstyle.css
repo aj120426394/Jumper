@@ -68,6 +68,10 @@ h2 {
 	padding-top: 70px;
 	float: left;
 }
+#journalright{
+	font-family: 'Noto Serif', serif;
+	text-align: center;
+}
 
 #leftsubmit {
 	width: 100px;
