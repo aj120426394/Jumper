@@ -24,12 +24,16 @@ Parse.initialize("67U33LB7BRGpGARddbJvshafxX5voTzvlY4gWlWE", "a9E5kBevwjKHlxcZh8
 // entrypoint
 Jumper.start = function(){
 	Jumper.currentUser = Parse.User.current();
-	Jumper.director = new lime.Director(document.body,1024,768);
-	if(Jumper.currentUser.get("tutDone")){
-		Jumper.ChapterSelection();
-	}else{
-		Jumper.intro1();
+	Jumper.director = new lime.Director(document.getElementById("container"),1024,768);
+	if(Jumper.currentUser != null){
+		document.getElementById("username").innerHTML = Jumper.currentUser.get('username')+"'s Investigation Journal";
+		if(Jumper.currentUser.get("tutDone")){
+			Jumper.ChapterSelection();
+		}else{
+			Jumper.intro1();
+		}
 	}
+	
 	
 	Jumper.director.makeMobileWebAppCapable();
 	Jumper.director.setDisplayFPS(false);
@@ -500,12 +504,16 @@ Jumper.Chapter1 = function(){
 		function putButton1(){
 			// Set the button of the white horse
 			layer_bnt1 = new lime.Layer().setPosition(585,260).setAnchorPoint(0,0).setSize(100,100);
-			bnt1 = new lime.Sprite().setStroke(2,'#FFFFFF').setSize(100,100).setPosition(0,0).setAnchorPoint(0,0);
+			bnt1 = new lime.Sprite().setFill('assets/horse.png').setSize(100,100).setPosition(0,0).setAnchorPoint(0,0);
 			layer_bnt1.appendChild(bnt1);
 			
 			var jQ_layer_bnt1 = $(layer_bnt1.getDeepestDomElement());
 			jQ_layer_bnt1.css('cursor', 'pointer');
-			
+			/*
+			jQ_layer_bnt1.css('-webkit-box-shadow','0px 0px 20px rgba(255,255,255,0.8)');
+			jQ_layer_bnt1.css('-moz-box-shadow','0px 0px 20px rgba(255,255,255,0.8)');
+			jQ_layer_bnt1.css('0px 0px 20px rgba(255,255,255,0.8)','0px 0px 20px rgba(255,255,255,0.8)');
+			*/
 			scene.appendChild(layer_bnt1);
 			goog.events.listen(layer_bnt1,['click','touchstart'],function(e){
 				snd_part2.pause();

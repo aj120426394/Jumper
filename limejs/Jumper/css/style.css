@@ -1,16 +1,26 @@
 html{
-	background: #60311B;
 }
 
 body{
 	font-family: 'Andika', sans-serif;
+	background: url('../assets/background.jpg') black;
+	padding:0;
+	margin: 0;
 }
 #frame{
 	width: 1024px;
 	height: 768px;
-	background:url('../assets/img/bg.png');
+	background:url('../assets/img/bg.jpg');
 	background-repeat:no-repeat;
 	margin: auto;
+}
+
+#title {
+	width: 600px;
+	margin-left: 150px;
+	position: absolute;
+	left: 20px;
+	top: -5px;
 }
 
 #logo {
@@ -21,7 +31,17 @@ body{
 	margin-right: auto;
 }
 
+#topbar {
+	width: 100%;
+	height: 70px;
+	background: #d0bfa3;
+	box-shadow: #444 1px 1px 6px;
+}
 
+#toplogo {
+	height: 80px;
+	width: 150px;
+}
 
 #loginbg {
 	width: 302px;
