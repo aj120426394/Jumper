@@ -35,6 +35,7 @@ $(document).ready(function() {
     
     var currentUser = Parse.User.current();
     if (currentUser) {
+    	console.log(currentUser);
     	var userID = currentUser.get("username");
 		var userID2 = currentUser.get("username").charAt(0).toUpperCase() + currentUser.get("username").slice(1);
     
@@ -54,9 +55,7 @@ $(document).ready(function() {
     // do nothing
     }
     
-    if (gfclue) {
-    	$('#clue1small').show();
-    }
+    
     
     // header for the page
     
@@ -131,7 +130,11 @@ $(document).ready(function() {
     				currentUser.set("grq3", gfq3);
     				currentUser.set("grq3text", gfq3text);
     				currentUser.save();
-    			}
+    			},
+    			error: function(gameScore, error) {
+			    // Execute any logic that should take place if the save fails.
+			    // error is a Parse.Error with an error code and description.
+			  }
     		});
     		playpart4();
     	} else {
@@ -230,6 +233,7 @@ function endpart3() {
 
 function playpart4() {
 	stopallaudioandgifs();
+    	$('#clue1small').show();
 		document.getElementById('part4').play();
 		$('#museumguideimage').hide();
 		$('#museumguidegif').show();
@@ -251,11 +255,12 @@ function playpart5() {
 		endpart5();
 }
 
-function endpart5() {	
+function endpart5() {
+	
 	setTimeout (function() {
 		$('#museumguideimage').show();
 		$('#museumguidegif').hide();
-		window.location.href = '../limejs/jumper/Jumper.html';
+		window.location.href = 'Jumper.html';
 		},
 		13000);
 }

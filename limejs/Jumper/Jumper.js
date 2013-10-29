@@ -25,6 +25,7 @@ Parse.initialize("67U33LB7BRGpGARddbJvshafxX5voTzvlY4gWlWE", "a9E5kBevwjKHlxcZh8
 Jumper.start = function(){
 	Jumper.currentUser = Parse.User.current();
 	Jumper.director = new lime.Director(document.body,1024,768);
+	console.log(Jumper.currentUser);
 	if(Jumper.currentUser.get("tutDone")){
 		Jumper.ChapterSelection();
 	}else{
@@ -239,6 +240,12 @@ Jumper.intro3 = function(){
 	audio6.addEventListener('ended', function(){
 	layer.removeChild(animated_guy);
 	layer.appendChild(guy);
+	Jumper.currentUser.save(null, {
+    			success: function(currentUser) {
+    				currentUser.set("tutDone", true);
+    				currentUser.save();
+    			}
+    		});
 	goog.events.listen(ch1button,['mousedown','touchstart'],function(e){
 	//insert transition to chapter 1 here
 		Jumper.timeTravle("chapter1");
@@ -378,21 +385,7 @@ Jumper.timeTravle = function(nextStep){
 		jumpOut.play();
 		jupmOutRotate.play();
 	});
-    /*
-    goog.events.listen(jumpOut,lime.animation.Event.STOP,function(){
-    	if(nextStep == "chapter1"){
-    		Jumper.Chapter1();
-    	}else if(nextStep == "chapter2"){
-    		Jumper.Chapter2();
-    	}else if(nextStep == "chapterSelect"){
-	    	Jumper.ChapterSelection();
-    	}else if(nextStep == "intro2"){
-	    	Jumper.intro2();
-    	}else if(nextStep == "intro3"){
-	    	Jumper.intro3();
-    	}
-	});
-	*/
+
 	snd_timeTravel.addEventListener('ended', function(){
 		if(nextStep == "chapter1"){
     		Jumper.Chapter1();
@@ -404,6 +397,8 @@ Jumper.timeTravle = function(nextStep){
 	    	Jumper.intro2();
     	}else if(nextStep == "intro3"){
 	    	Jumper.intro3();
+    	}else if(nextStep == "Journal"){
+	    	window.location = 'journal.html';
     	}
 	});
     
@@ -416,40 +411,59 @@ Jumper.Chapter1 = function(){
 	var timer;
 	scene1();
 	
+	
 	function scene1(){
-		scene = new lime.Scene();
+		var scene = new lime.Scene();
 		// Set background
-		layer_bg = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
-		background = new lime.Sprite().setFill('assets/goldfield scene.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
+		var layer_bg = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
+		var background = new lime.Sprite().setFill('assets/goldfield scene.jpg').setSize(1024,768).setPosition(0,0).setAnchorPoint(0,0);
 		layer_bg.appendChild(background);
 		scene.appendChild(layer_bg);
 		
 		//  Set the character
-		layer_charc = new lime.Layer().setPosition(100,650).setAnchorPoint(.5,.5);
-		charc  = new lime.Sprite().setFill('assets/character.gif').setSize(300,400).setPosition(0,0);
-		layer_charc.appendChild(charc);
+		var layer_charc = new lime.Layer().setPosition(100,650).setAnchorPoint(.5,.5);
+		var charc  = new lime.Sprite().setFill('assets/character.gif').setSize(300,400).setPosition(0,0);
+		var charc_static = new lime.Sprite().setFill('assets/character_static.png').setSize(300,400).setPosition(0,0);
+		layer_charc.appendChild(charc_static);
 		scene.appendChild(layer_charc);
 		
 		// Character talking audio.
-		snd_part1 = new Audio('assets/audio/GF1_part1.ogg');
-		snd_part2 = new Audio('assets/audio/GF1_part2.ogg');
-		snd_part5 = new Audio('assets/audio/GF1_part5.ogg');
-		snd_part6 = new Audio('assets/audio/GF1_part6.ogg');
+		var snd_part1 = new Audio('assets/audio/GF1_part1.ogg');
+		var snd_part2 = new Audio('assets/audio/GF1_part2.ogg');
+		var snd_part5 = new Audio('assets/audio/GF1_part5.ogg');
+		var snd_part6 = new Audio('assets/audio/GF1_part6.ogg');
 		
-		
+		snd_part1.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part1.addEventListener('ended', function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			putButton1();
 			putButton2();
 			timer = setTimeout(function(){
 				snd_part2.play();
 			}, 10000);
 		});
+		snd_part2.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part2.addEventListener('ended',function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			timer = setTimeout(function(){
 				snd_part2.play();
 			}, 10000);
 		});
+		snd_part5.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part5.addEventListener('ended',function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			putButton1();
 			putButton2();
 			putButton3();
@@ -458,7 +472,13 @@ Jumper.Chapter1 = function(){
 				snd_part6.play();
 			}, 10000);
 		});
+		snd_part6.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part6.addEventListener('ended',function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			timer = setTimeout(function(){
 				snd_part6.play();
 			}, 10000);
@@ -468,7 +488,7 @@ Jumper.Chapter1 = function(){
 			// Finish first part
 			if(Jumper.fin_task3 == true && Jumper.fin_task4 == true){
 				// Finish all task
-				Jumper.game2(scene);
+				Jumper.game2(scene, layer_charc, charc, charc_static);
 				//Jumper.final1(scene);
 			}else{
 				if(Jumper.fin_task3 == true || Jumper.fin_task4 == true){
@@ -513,7 +533,7 @@ Jumper.Chapter1 = function(){
 				clearTimeout(timer);
 				scene.removeChild(layer_bnt1);
 				scene.removeChild(layer_bnt2);
-				ShowMap(scene);
+				ShowMap(scene, layer_charc, charc, charc_static);
 			});
 		}
 		
@@ -532,7 +552,7 @@ Jumper.Chapter1 = function(){
 				clearTimeout(timer);
 				scene.removeChild(layer_bnt1);
 				scene.removeChild(layer_bnt2);
-				Game(scene);
+				Game(scene, layer_charc, charc, charc_static);
 			});
 		}
 		
@@ -552,7 +572,7 @@ Jumper.Chapter1 = function(){
 				scene.removeChild(layer_bnt2);
 				scene.removeChild(layer_bnt3);
 				scene.removeChild(layer_bnt4);
-				Task3(scene);
+				Task3(scene, layer_charc, charc, charc_static);
 			});
 			
 		}
@@ -573,7 +593,7 @@ Jumper.Chapter1 = function(){
 				scene.removeChild(layer_bnt2);
 				scene.removeChild(layer_bnt3);
 				scene.removeChild(layer_bnt4);
-				Task4(scene);
+				Task4(scene, layer_charc, charc, charc_static);
 			});
 		}
 				
@@ -581,7 +601,7 @@ Jumper.Chapter1 = function(){
 		Jumper.director.replaceScene(scene,lime.transitions.Dissolve);
 	};
 	
-	function ShowMap(scene){
+	function ShowMap(scene, layer_charc, charc, charc_static){
 	
 		layer_map = new lime.Layer().setPosition(-500,-500).setAnchorPoint(.5,.5);
 		background_map = new lime.Sprite().setFill('assets/chn_au_map.jpg').setSize(700,600).setPosition(0,0).setAnchorPoint(0,0);
@@ -589,7 +609,13 @@ Jumper.Chapter1 = function(){
 		snd_part3 = new Audio('assets/audio/GF1_part3a.ogg');
 		snd_part3.play();
 		
+		snd_part3.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part3.addEventListener('ended', function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			timer = setTimeout(function(){
 				Jumper.fin_task1 = true;
 				scene1();
@@ -655,7 +681,7 @@ Jumper.Chapter1 = function(){
 		*/
 	};
 	
-	function Game(scene){
+	function Game(scene, layer_charc, charc, charc_static){
 		layer_video = new lime.Layer().setPosition(200,100).setAnchorPoint(.5,.5);
 		video_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
 		video = goog.dom.createDom('video');
@@ -675,8 +701,14 @@ Jumper.Chapter1 = function(){
 		snd_part5 = new Audio('assets/audio/GF1_part4.ogg');
 		
 		snd_part4.play();
+		snd_part4.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part4.addEventListener('ended', function(){
-			video.src = 'assets/Gold_panning.mp4';
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
+			video.src = 'assets/Gold_panning.webm';
 			video.setAttribute('autoplay',true);
 			video.setAttribute('width', 800);
 			video_container.appendChild(video);
@@ -684,28 +716,40 @@ Jumper.Chapter1 = function(){
 			scene.appendChild(layer_video);
 		});
 		
+		snd_part5.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part5.addEventListener('ended', function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			Jumper.fin_task2 = true;
-			Jumper.gameIntro();
+			Jumper.gameIntro(charc, charc_static);
 		});
 
 	};
 	
-	function Task3(scene){
+	function Task3(scene, layer_charc, charc, charc_static){
 		var layer_video = new lime.Layer().setPosition(200,100).setAnchorPoint(.5,.5);
 		var video_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
 		var snd_part7b1 = new Audio('assets/audio/GF1_part7b_1.ogg');
 		var video = goog.dom.createDom('video');
 		
 		video.addEventListener('ended', function(){
-			console.log("123");
 			scene.removeChild(layer_video);
 			Jumper.fin_task3 = true;
 			scene1();
 		});
 		
 		snd_part7b1.play();
+		
+		snd_part7b1.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part7b1.addEventListener('ended', function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			video.src = 'assets/GT-Chinese.webm';
 			video.setAttribute('autoplay',true);
 			video.setAttribute('width', 800);
@@ -717,7 +761,7 @@ Jumper.Chapter1 = function(){
 		
 	};
 	
-	function Task4(scene){
+	function Task4(scene, layer_charc, charc, charc_static){
 		var layer_news = new lime.Layer().setPosition(200,100).setAnchorPoint(.5,.5);
 		var news_container = new lime.Sprite().setRenderer(lime.Renderer.DOM).setPosition(0,0).setAnchorPoint(.5,.5);
 		var snd_part7a1 = new Audio('assets/audio/GF1_part7a_1.ogg');
@@ -736,7 +780,14 @@ Jumper.Chapter1 = function(){
 
 		
 		snd_part7a1.play();
+		
+		snd_part7a1.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part7a1.addEventListener('ended', function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			news_container.appendChild(div);
 			scene.appendChild(click_after_read);
 		});
@@ -744,7 +795,13 @@ Jumper.Chapter1 = function(){
 		goog.events.listen(click_after_read,['click','touchstart'],function(e){
 			snd_part7a2.play();
 		});
+		snd_part7a2.addEventListener('play', function(){
+			layer_charc.removeChild(charc_static);
+			layer_charc.appendChild(charc);
+		});
 		snd_part7a2.addEventListener('ended', function(){
+			layer_charc.removeChild(charc);
+			layer_charc.appendChild(charc_static);
 			news_container.appendChild(div);
 			scene.removeChild(click_after_read);
 			scene.removeChild(layer_news);
@@ -771,7 +828,7 @@ Jumper.Chapter2 = function(){
 	Jumper.director.replaceScene(scene,lime.transitions.Dissolve);
 };
 
-Jumper.game2 = function(scene){
+Jumper.game2 = function(scene, layer_charc, charc, charc_static){
 	
 	var layer = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
 	scene.appendChild(layer);
@@ -800,10 +857,22 @@ Jumper.game2 = function(scene){
 		new lime.animation.MoveTo(512,384),
 		new lime.animation.RotateTo(0)
     );
-	snd_part8b = new Audio('assets/audio/GF1_part8b.ogg')
+	snd_part8b = new Audio('assets/audio/GF1_part8b.ogg');
+	snd_part8b.addEventListener('play', function(){
+		layer_charc.removeChild(charc_static);
+		layer_charc.appendChild(charc);
+	});
 	snd_part8b.addEventListener('ended', function(){
+		Jumper.currentUser.save(null, {
+    		success: function(currentUser) {
+    			currentUser.set("grclue", true);
+    			currentUser.save();
+    		}
+    	});
+		layer_charc.removeChild(charc);
+		layer_charc.appendChild(charc_static);
 		scene.removeChild(layer);
-		Jumper.final1(scene);
+		Jumper.final1(scene, layer_charc, charc, charc_static);
 	});
 	
 	
@@ -828,6 +897,14 @@ Jumper.game2 = function(scene){
 	wind_sound.play();
 	});
 	
+	snd_part8a.addEventListener('play', function(){
+		layer_charc.removeChild(charc_static);
+		layer_charc.appendChild(charc);
+	});
+	snd_part8a.addEventListener('ended', function(){
+		layer_charc.removeChild(charc);
+		layer_charc.appendChild(charc_static);
+	});
 	
 	//Jumper.director.replaceScene(scene);
 	
@@ -864,7 +941,7 @@ Jumper.game2 = function(scene){
 	
 };
 
-Jumper.final1 = function(scene){
+Jumper.final1 = function(scene, layer_charc, charc, charc_static){
 	var layer_roo = new lime.Layer().setPosition(0,0).setAnchorPoint(0,0);
 	var roo = new lime.Sprite().setFill('assets/img/kangroo2.png').setSize(567,567).setPosition(1200,400).setAnchorPoint(0.5,0.5);
 	var snd_part9 = new Audio('assets/audio/GF1_part9.ogg');
@@ -875,8 +952,17 @@ Jumper.final1 = function(scene){
     	new lime.animation.MoveTo(800,600).setDuration(2.5)
     );
     
+    snd_part9.addEventListener('play', function(){
+		layer_charc.removeChild(charc_static);
+		layer_charc.appendChild(charc);
+	});
+	snd_part9.addEventListener('ended', function(){
+		layer_charc.removeChild(charc);
+		layer_charc.appendChild(charc_static);
+	});
+	
     goog.events.listen(roo,['click','touchstart'],function(e){
-    	window.location = 'journal.html'
+    	Jumper.timeTravle("Journal");
 	});
     roo.runAction(jumpIn);
     
